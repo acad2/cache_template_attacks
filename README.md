@@ -54,22 +54,22 @@ sleep 3; ./profiling 200 7faec85f5000-7faec86cf000 r-xp 20000 fd:01 11930745    
 
 You are generally looking for addresses which have high peaks, like the following (done while pressing the key N in gedit):
 ```
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x242c0,   7
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24300,   4
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24340,   3
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24380,   7
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x243c0,  29
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24400,  32
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24440,  10
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24480,   9
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x244c0,  13
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24500,   8
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24540,   5
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24580,   8
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x245c0,  13
-/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24600,   6
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24640,   6
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24680,  24
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x246c0,  20
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24700,  20
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24740,  48
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24780,  24
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x247c0,  22
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24800,  12
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24840,  14
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24880,  11
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x248c0,   7
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24900,   9
+/usr/lib/x86_64-linux-gnu/gedit/libgedit.so, 0x24940,  10
+
 ```
-The address 0x24400 had 32 cache hits during a probe duration of 200µs.
+The address 0x24740 had 48 cache hits during a probe duration of 200µs.
 
 **Note down a few suitable addresses** with such high peaks. To filter false positive cache hits we should then perform a second profiling scan without jamming a key.
 
@@ -87,4 +87,18 @@ make
 sleep 3; ./spy /usr/lib/x86_64-linux-gnu/gedit/libgedit.so <addr>
 ```
 
+You can then verify that the address indeed has cache hits when pressing a key (and only when pressing a key) by pressing keys in gedit and observing the output of the spy program. You may need to try several addresses to find one that does not give false positives (i.e. cache hits for other events than key presses). 
 
+```
+32208296600503: Cache Hit (152 cycles) after a pause of 622379 cycles
+32211812588823: Cache Hit (152 cycles) after a pause of 1113837 cycles
+32211813157561: Cache Hit (139 cycles) after a pause of 143 cycles
+32211813748560: Cache Hit (142 cycles) after a pause of 177 cycles
+32211842303343: Cache Hit (97 cycles) after a pause of 9344 cycles
+32212655472978: Cache Hit (152 cycles) after a pause of 258912 cycles
+32212656169146: Cache Hit (152 cycles) after a pause of 181 cycles
+32212656572860: Cache Hit (142 cycles) after a pause of 117 cycles
+32213463151480: Cache Hit (142 cycles) after a pause of 255451 cycles
+```
+
+You may also observe several cache hits events in a relatively short time frame when pressing one key. You can modify ```spy.c``` to filter out events to obtain a clean trace of single events per key press. 
