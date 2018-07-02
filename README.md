@@ -80,6 +80,8 @@ The address 0x24740 had 48 cache hits during a probe duration of 200µs.
 -----
 ## Step #3: Key presses
 
+You can now start monitoring key presses events, with the spy tool in the **exploitation folder**.
+
 Switch to an already opened gedit window before ./spy is started, and try one of the addresses you noted down in step #2, by running the following lines:
 ```
 cd exploitation
