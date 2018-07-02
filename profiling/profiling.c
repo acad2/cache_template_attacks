@@ -12,10 +12,10 @@
 #include <stdlib.h>
 #include <sched.h>
 #include <stdint.h>
-#include "../../cacheutils.h"
+#include "../cacheutils.h"
 
 // this number varies on different systems
-#define MIN_CACHE_MISS_CYCLES (155)
+#define MIN_CACHE_MISS_CYCLES (220)
 
 size_t flushandreload(void* addr, size_t duration)
 {
@@ -42,8 +42,8 @@ size_t flushandreload(void* addr, size_t duration)
 int main(int argc, char** argv)
 {
   if (argc != 8)
-    exit(!fprintf(stderr,"  usage: ./spy <probeduration> <addressrange> <perms> <offset> <dev> <inode> <filename>\n"
-                 "example: ./spy 200             400000-489000  --    0        -- -- /usr/bin/gedit\n"));
+    exit(!fprintf(stderr,"  usage: ./profiling <probeduration> <addressrange> <perms> <offset> <dev> <inode> <filename>\n"
+                 "example: ./profiling 200 7faec85f5000-7faec86cf000 r-xp 0 fd:01 11930745 /usr/lib/x86_64-linux-gnu/gedit/libgedit.so\n"));
   size_t duration = 0;
   if (!sscanf(argv[1],"%lu",&duration))
     exit(!printf("duration error\n"));
