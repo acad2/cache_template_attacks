@@ -49,7 +49,7 @@ Run the following commands to find keypress information leakage in gedit (the pr
 ```
 cd profiling
 make
-./profiling 200 7faec85f5000-7faec86cf000 r-xp 20000 fd:01 11930745                   /usr/lib/x86_64-linux-gnu/gedit/libgedit.so # in our example we profile keypresses in gedit
+sleep 3; ./profiling 200 7faec85f5000-7faec86cf000 r-xp 20000 fd:01 11930745                   /usr/lib/x86_64-linux-gnu/gedit/libgedit.so # in our example we profile keypresses in gedit
 ```
 
 You are generally looking for addresses which have high peaks, like the following (done while pressing the key N in gedit):
@@ -84,7 +84,7 @@ Switch to an already opened gedit window before ./spy is started, and try one of
 ```
 cd exploitation
 make
-sleep 5; ./spy /usr/lib/x86_64-linux-gnu/gedit/libgedit.so <addr>
+sleep 3; ./spy /usr/lib/x86_64-linux-gnu/gedit/libgedit.so <addr>
 ```
 
 
