@@ -59,25 +59,6 @@ int main(int argc, char** argv)
     if (miss_histogram[i] > 3 && miss_min_i == 0)
       miss_min_i = i;
   }
-  if (miss_min_i > hit_max_i+4)
-    printf("Flush+Reload possible!\n");
-  else if (miss_min_i > hit_max_i+2)
-    printf("Flush+Reload probably possible!\n");
-  else if (miss_min_i < hit_max_i+2)
-    printf("Flush+Reload maybe not possible!\n");
-  else
-    printf("Flush+Reload not possible!\n");
-  size_t min = -1UL;
-  size_t min_i = 0;
-  for (int i = hit_max_i; i < miss_min_i; ++i)
-  {
-    if (min > (hit_histogram[i] + miss_histogram[i]))
-    {
-      min = hit_histogram[i] + miss_histogram[i];
-      min_i = i;
-    }
-  }
-  printf("The lower the threshold, the lower the number of false positives.\n");
-  printf("Suggested cache hit/miss threshold: %zu\n",min_i * 5);
-  return min_i * 5;
+
+  return 0;
 }
